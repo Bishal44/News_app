@@ -7,6 +7,7 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+./idea/
 .DS_Store
 /build
 /captures
@@ -223,4 +224,4 @@ fabric.properties
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
 
-# End of https://www.gitignore.io/api/linux,android,androidstudio
+./idea/fileTempletes
