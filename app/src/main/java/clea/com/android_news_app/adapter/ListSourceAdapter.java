@@ -1,12 +1,15 @@
 package clea.com.android_news_app.adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import clea.com.android_news_app.Interface.ItemClickListner;
+import clea.com.android_news_app.Model.Website;
 import clea.com.android_news_app.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,20 +45,32 @@ class ListSourceViewHolder extends RecyclerView.ViewHolder implements View.OnCli
 }
 public class ListSourceAdapter extends RecyclerView.Adapter<ListSourceViewHolder>{
 
+    private Context context;
+    private Website  website;
+
+    public ListSourceAdapter(Context context, Website website) {
+        this.context = context;
+        this.website = website;
+    }
 
     @NonNull
     @Override
     public ListSourceViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return null;
+        LayoutInflater inflater= LayoutInflater.from(viewGroup.getContext());
+        View view=inflater.inflate(R.layout.source_layout,viewGroup,false);
+
+        return new ListSourceViewHolder(view);
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull ListSourceViewHolder listSourceViewHolder, int i) {
 
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return website.getSources().size();
     }
 }
