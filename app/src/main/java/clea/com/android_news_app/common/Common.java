@@ -1,6 +1,8 @@
 package clea.com.android_news_app.common;
 
+import clea.com.android_news_app.Interface.IconBetterIdeaService;
 import clea.com.android_news_app.Interface.NewsService;
+import clea.com.android_news_app.remote.IconBetterIdeaClient;
 import clea.com.android_news_app.remote.RetrofitClient;
 
 public class Common {
@@ -9,5 +11,8 @@ public class Common {
 
     public static NewsService getNewsService(){
         return RetrofitClient.getClient(BASE_URL).create(NewsService.class);
+    }
+    public static IconBetterIdeaService getIconService(){
+        return IconBetterIdeaClient.getClient().create(IconBetterIdeaService.class);
     }
 }
