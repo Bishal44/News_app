@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "clea.com.android_news_app"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -43,6 +43,9 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     implementation 'io.paperdb:paperdb:2.6'
+
+    implementation 'com.github.florent37:diagonallayout:1.0.9'
+    implementation 'com.flaviofaria:kenburnsview:1.0.7'
 
 
 }

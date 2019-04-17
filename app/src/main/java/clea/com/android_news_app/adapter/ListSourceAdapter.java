@@ -1,6 +1,7 @@
 package clea.com.android_news_app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import clea.com.android_news_app.Interface.IconBetterIdeaService;
 import clea.com.android_news_app.Interface.ItemClickListner;
+import clea.com.android_news_app.ListNews;
 import clea.com.android_news_app.Model.IconBetterIdea;
 import clea.com.android_news_app.Model.Website;
 import clea.com.android_news_app.R;
@@ -43,6 +45,9 @@ class ListSourceViewHolder extends RecyclerView.ViewHolder implements View.OnCli
         super(itemView);
         source_image=itemView.findViewById(R.id.source_image);
         source_title=itemView.findViewById(R.id.source_name);
+
+        //on click the icon and name of news
+        itemView.setOnClickListener(this);
     }
 
     public void setItemClickListner(ItemClickListner itemClickListner) {
@@ -107,6 +112,10 @@ public class ListSourceAdapter extends RecyclerView.Adapter<ListSourceViewHolder
         listSourceViewHolder.setItemClickListner(new ItemClickListner() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
+                Intent intent=new Intent(context, ListNews.class);
+                intent.putExtra("source",website.getSources().get(position).getId());
+                intent.putExtra("sorts_by",website.getSources().get(position).getSortByAvavible().get(0));
+                context.startActivity(intent);
 
             }
         });
