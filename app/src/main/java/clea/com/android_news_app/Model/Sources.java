@@ -2,33 +2,6 @@ package clea.com.android_news_app.Model;
 
 import java.util.List;
 
- class UrlsToLogs{
-     private String small,medium,large;
-
-     public String getSmall() {
-         return small;
-     }
-
-     public void setSmall(String small) {
-         this.small = small;
-     }
-
-     public String getMedium() {
-         return medium;
-     }
-
-     public void setMedium(String medium) {
-         this.medium = medium;
-     }
-
-     public String getLarge() {
-         return large;
-     }
-
-     public void setLarge(String large) {
-         this.large = large;
-     }
- }
 
 public class Sources {
     private String id;
@@ -39,13 +12,12 @@ public class Sources {
     private String language;
     private String country;
 
-    private UrlsToLogs urlsToLogs;
-    private List<String> sortByAvavible;
 
     public Sources() {
     }
 
-    public Sources(String id, String name, String description, String url, String category, String language, String country, UrlsToLogs urlsToLogs, List<String> sortByAvavible) {
+
+    public Sources(String id, String name, String description, String url, String category, String language, String country) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -53,8 +25,6 @@ public class Sources {
         this.category = category;
         this.language = language;
         this.country = country;
-        this.urlsToLogs = urlsToLogs;
-        this.sortByAvavible = sortByAvavible;
     }
 
     public String getId() {
@@ -113,19 +83,5 @@ public class Sources {
         this.country = country;
     }
 
-    public UrlsToLogs getUrlsToLogs() {
-        return urlsToLogs;
-    }
 
-    public void setUrlsToLogs(UrlsToLogs urlsToLogs) {
-        this.urlsToLogs = urlsToLogs;
-    }
-
-    public List<String> getSortByAvavible() {
-        return sortByAvavible;
-    }
-
-    public void setSortByAvavible(List<String> sortByAvavible) {
-        this.sortByAvavible = sortByAvavible;
-    }
 }

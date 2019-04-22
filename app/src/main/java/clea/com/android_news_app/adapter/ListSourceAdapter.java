@@ -88,25 +88,7 @@ public class ListSourceAdapter extends RecyclerView.Adapter<ListSourceViewHolder
     @Override
     public void onBindViewHolder(@NonNull final ListSourceViewHolder listSourceViewHolder, int i) {
         //i is position
-        StringBuilder iconBetterIdeaApi=new StringBuilder("http://icons.better-idea.org/allicons.json?url=");
-        iconBetterIdeaApi.append(website.getSources().get(i).getUrl());
 
-        ideaService.getIconUrl(iconBetterIdeaApi.toString()).
-                enqueue(new Callback<IconBetterIdea>() {
-                    @Override
-                    public void onResponse(Call<IconBetterIdea> call, Response<IconBetterIdea> response) {
-                        if(response.body().getIcons().size()>0){
-                            Picasso.get().load(response.body().getIcons().get(0).getUrl())
-                                    .into(listSourceViewHolder.source_image);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<IconBetterIdea> call, Throwable t) {
-
-                    }
-                }
-        );
 
         listSourceViewHolder.source_title.setText(website.getSources().get(i).getName());
         listSourceViewHolder.setItemClickListner(new ItemClickListner() {
@@ -114,8 +96,7 @@ public class ListSourceAdapter extends RecyclerView.Adapter<ListSourceViewHolder
             public void onClick(View view, int position, boolean isLongClick) {
                 Intent intent=new Intent(context, ListNews.class);
                 intent.putExtra("source",website.getSources().get(position).getId());
-                intent.putExtra("sorts_by",website.getSources().get(position).getSortByAvavible().get(0));
-                context.startActivity(intent);
+               context.startActivity(intent);
 
             }
         });
