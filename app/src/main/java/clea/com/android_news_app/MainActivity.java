@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import clea.com.android_news_app.Interface.NewsService;
 import clea.com.android_news_app.Model.Website;
 import clea.com.android_news_app.adapter.ListSourceAdapter;
+import clea.com.android_news_app.common.Common;
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
 import retrofit2.Call;
@@ -22,10 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView listWebsite;
     RecyclerView.LayoutManager layoutManager;
-    NewsService mservice;
-    AlertDialog alertDialog;
+    NewsService mService;
     ListSourceAdapter adapter;
-    SwipeRefreshLayout swipeRefreshLayout;
+    AlertDialog dialog;
+    SwipeRefreshLayout swipeLayout;
 
 
     @Override
@@ -33,63 +34,60 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        74881819f4a944379382bebf6e8b7f5a
-
-        //for cache
+        //Init cache
         Paper.init(this);
 
-        //init views
-        swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipe);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        //Init Service
+        mService = Common.getNewsService();
+
+        //Init View
+        swipeLayout = (SwipeRefreshLayout)findViewById(R.id.swipe);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadWebSiteSource(true);
-
+                loadWebsiteSource(true);
             }
         });
 
-
-
-        listWebsite=(RecyclerView)findViewById(R.id.list_source);
+        listWebsite = (RecyclerView)findViewById(R.id.list_source);
         listWebsite.setHasFixedSize(true);
-
-        layoutManager=new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         listWebsite.setLayoutManager(layoutManager);
 
+        dialog = new SpotsDialog.Builder().setContext(this).build();
 
-        alertDialog= new SpotsDialog.Builder().setContext(this).build();
-
-        loadWebSiteSource(false);
-
+        loadWebsiteSource(false);
 
     }
 
-    private void loadWebSiteSource(boolean isRefreshed) {
-        if(!isRefreshed){
-            String cache=Paper.book().read("cache");
-            if(cache !=null && !cache.isEmpty() && !cache.equals("null")){ //if cache is there
+    private void loadWebsiteSource(boolean isRefreshed) {
+        if(!isRefreshed)
+        {
 
-                Website website=new Gson().fromJson(cache,Website.class); //convert cache from json to object
-                adapter=new ListSourceAdapter(getBaseContext(),website);
+            String cache = Paper.book().read("cache");
+            if(cache != null && !cache.isEmpty() && !cache.equals("null")) // If have cache
+            {
+                Website website = new Gson().fromJson(cache,Website.class); // Convert cache from Json to Object
+                adapter = new ListSourceAdapter(getBaseContext(),website);
                 adapter.notifyDataSetChanged();
                 listWebsite.setAdapter(adapter);
-
-            }else { //if not have cache
-                alertDialog.show();
-
-
-                //fetch
-                mservice.getSources().enqueue(new Callback<Website>() {
+            }
+            else // If not have cache
+            {
+                dialog.show();
+                //Fetch new data
+                mService.getSources().enqueue(new Callback<Website>() {
                     @Override
                     public void onResponse(Call<Website> call, Response<Website> response) {
-                        adapter=new ListSourceAdapter(getBaseContext(),response.body());
+                        adapter  = new ListSourceAdapter(getBaseContext(),response.body());
                         adapter.notifyDataSetChanged();
                         listWebsite.setAdapter(adapter);
 
-
-                        //save cache
+                        //Save to cache
                         Paper.book().write("cache",new Gson().toJson(response.body()));
-                        alertDialog.dismiss();
+
+                        dialog.dismiss();
+
                     }
 
                     @Override
@@ -97,26 +95,25 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-
             }
         }
-        else {
+        else // If from Swipe to Refresh
+        {
 
-            swipeRefreshLayout.setRefreshing(true);
-            //from swipe to refreshed same copy
-            mservice.getSources().enqueue(new Callback<Website>() {
+            swipeLayout.setRefreshing(true);
+            //Fetch new data
+            mService.getSources().enqueue(new Callback<Website>() {
                 @Override
                 public void onResponse(Call<Website> call, Response<Website> response) {
-                    adapter=new ListSourceAdapter(getBaseContext(),response.body());
+                    adapter  = new ListSourceAdapter(getBaseContext(),response.body());
                     adapter.notifyDataSetChanged();
                     listWebsite.setAdapter(adapter);
 
-
-                    //save cache
+                    //Save to cache
                     Paper.book().write("cache",new Gson().toJson(response.body()));
 
-                    //stop refreshing
-                    swipeRefreshLayout.setRefreshing(false);
+                    //Dismiss refresh progressring
+                    swipeLayout.setRefreshing(false);
                 }
 
                 @Override
@@ -125,8 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-
         }
-
     }
 }

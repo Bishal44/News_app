@@ -7,7 +7,7 @@ import clea.com.android_news_app.remote.RetrofitClient;
 
 public class Common {
     private static final String BASE_URL="https://newsapi.org/";
-    public static final String API_KEY="74881819f4a944379382bebf6e8b7f5a";
+    public static final String API_KEY="60da14a8b3c74b7c967235be46bdeb61";
 
     public static NewsService getNewsService(){
         return RetrofitClient.getClient(BASE_URL).create(NewsService.class);
