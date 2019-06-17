@@ -14,3 +14,6 @@ public interface NewsService {
     @GET
     Call<News> getNewestArticles(@Url String url);
 }
+
+//https://newsapi.org/v2/top-headlines?sources=
+//https://newsapi.org/
